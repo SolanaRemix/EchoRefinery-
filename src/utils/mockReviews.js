@@ -1,0 +1,88 @@
+/**
+ * mockReviews.js
+ * Simulated review data for demo / development mode.
+ * Used when Firebase is not fully configured.
+ */
+
+export const MOCK_REVIEWS = [
+  {
+    id: 'mock-1',
+    text: 'Absolutely fantastic service! The team was incredibly helpful and our experience was outstanding. Would highly recommend to everyone.',
+    author: 'Sarah M.',
+    rating: 5,
+    source: 'Google',
+    timestamp: { toDate: () => new Date('2024-03-15T10:30:00') },
+    sentiment: 'Positive',
+    replyStatus: 'Replied',
+  },
+  {
+    id: 'mock-2',
+    text: 'Decent experience overall. Nothing spectacular but nothing terrible either. The staff was polite and the service was average.',
+    author: 'James K.',
+    rating: 3,
+    source: 'Yelp',
+    timestamp: { toDate: () => new Date('2024-03-14T14:45:00') },
+    sentiment: 'Neutral',
+    replyStatus: 'Pending',
+  },
+  {
+    id: 'mock-3',
+    text: 'Terrible experience! Waited over an hour and the food was cold when it finally arrived. Very disappointed and will not be returning.',
+    author: 'Emily R.',
+    rating: 1,
+    source: 'Facebook',
+    timestamp: { toDate: () => new Date('2024-03-13T19:00:00') },
+    sentiment: 'Negative',
+    replyStatus: 'Pending',
+  },
+  {
+    id: 'mock-4',
+    text: 'Best pizza in town! The crust was perfect and the toppings were fresh and delicious. Definitely coming back next week.',
+    author: 'Marco T.',
+    rating: 5,
+    source: 'Google',
+    timestamp: { toDate: () => new Date('2024-03-12T12:00:00') },
+    sentiment: 'Positive',
+    replyStatus: 'Replied',
+  },
+  {
+    id: 'mock-5',
+    text: 'The location is convenient but parking can be a nightmare. Service was okay, nothing to write home about.',
+    author: 'Linda P.',
+    rating: 3,
+    source: 'Yelp',
+    timestamp: { toDate: () => new Date('2024-03-11T16:20:00') },
+    sentiment: 'Neutral',
+    replyStatus: 'Ignored',
+  },
+  {
+    id: 'mock-6',
+    text: 'Amazing staff and wonderful atmosphere! Felt so welcome the moment I walked in. Highly recommend this place to all my friends.',
+    author: 'Carlos B.',
+    rating: 5,
+    source: 'Facebook',
+    timestamp: { toDate: () => new Date('2024-03-10T11:15:00') },
+    sentiment: 'Positive',
+    replyStatus: 'Replied',
+  },
+  {
+    id: 'mock-7',
+    text: 'Ordered online and half the items were missing from my bag. Very frustrating and a waste of money. Avoid this place.',
+    author: 'Rachel W.',
+    rating: 1,
+    source: 'Google',
+    timestamp: { toDate: () => new Date('2024-03-09T20:30:00') },
+    sentiment: 'Negative',
+    replyStatus: 'Pending',
+  },
+  {
+    id: 'mock-8',
+    text: 'Good quality products at fair prices. The checkout process could be faster but overall a pleasant shopping experience.',
+    author: 'David H.',
+    rating: 4,
+    source: 'Yelp',
+    timestamp: { toDate: () => new Date('2024-03-08T09:00:00') },
+    sentiment: 'Positive',
+    replyStatus: 'Pending',
+  },
+];
