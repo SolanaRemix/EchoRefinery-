@@ -43,7 +43,7 @@ const FEATURES = [
   {
     icon: ShieldCheck,
     title: 'Enterprise-Grade Security',
-    desc: 'All data stored in Firebase Firestore with enterprise-level security rules and end-to-end encryption.',
+    desc: 'All data stored in Firebase Firestore with enterprise-level security rules. Firestore provides encryption in transit and at rest via Google-managed keys.',
     color: 'text-rose-600 bg-rose-50',
   },
   {

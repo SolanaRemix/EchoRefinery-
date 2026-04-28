@@ -2,6 +2,13 @@
  * geminiApi.js
  * Calls Google Gemini API to perform AI sentiment analysis on review text.
  * Falls back to a local keyword-based classifier if the API key is not configured.
+ *
+ * ⚠️  SECURITY NOTE: VITE_GEMINI_API_KEY is bundled into the client-side JS and
+ * is therefore visible to anyone who inspects the built output.  For production,
+ * route Gemini requests through a backend / serverless function (e.g. a Firebase
+ * Cloud Function or Vercel Edge Function) that keeps the real key server-side and
+ * enforces per-user quotas.  At minimum, restrict the key to specific HTTP referrers
+ * and set a strict quota in the Google Cloud Console.
  */
 
 const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;

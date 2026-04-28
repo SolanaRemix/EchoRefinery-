@@ -53,8 +53,8 @@ export default function ReviewCard({ review }) {
         </div>
       </div>
 
-      {/* Review text */}
-      <p className="text-sm text-gray-700 leading-relaxed line-clamp-4">{review.text}</p>
+      {/* Review text — line-clamp is built-in from Tailwind 3.3+ */}
+      <p className="text-sm text-gray-700 leading-relaxed overflow-hidden line-clamp-4">{review.text}</p>
 
       {/* Footer row */}
       <div className="flex items-center justify-between pt-1 border-t border-gray-100">
