@@ -35,6 +35,8 @@ Each document in the `reviews` collection has the following shape:
 }
 ```
 
+> **Required Firestore composite index**: filtering by `source` and ordering by `timestamp` requires a composite index. Create it in the [Firebase console](https://console.firebase.google.com) under **Firestore → Indexes → Add index**: collection `reviews`, fields `source ASC` + `timestamp DESC`. Firestore will also include a direct creation link in the browser console if the index is missing.
+
 ---
 
 ## Tech Stack
@@ -81,6 +83,9 @@ VITE_FIREBASE_MESSAGING_SENDER_ID=...
 VITE_FIREBASE_APP_ID=...
 
 VITE_GEMINI_API_KEY=...
+
+# Set to "true" to run without real Firebase credentials (demo/development only)
+VITE_DEMO_MODE=false
 ```
 
 > ⚠️ **Security**: `VITE_*` variables are bundled into the client. For production, proxy Gemini API calls through a serverless function to keep the key server-side.

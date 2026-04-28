@@ -12,6 +12,11 @@
  *   sentiment: 'Positive' | 'Neutral' | 'Negative',
  *   replyStatus: 'Pending' | 'Replied' | 'Ignored',
  * }
+ *
+ * Required Firestore composite indexes:
+ *   Collection : reviews
+ *   Index 1    : source (ASC)  + timestamp (DESC)  — needed by fetchReviews(source)
+ *   Create at: https://console.firebase.google.com → Firestore → Indexes → Add index
  */
 
 import {
@@ -31,10 +36,18 @@ import { db } from './firebaseConfig';
 
 const REVIEWS_COLLECTION = 'reviews';
 
+// Firestore batches are capped at 500 operations per commit.
+const FIRESTORE_BATCH_LIMIT = 500;
+
 /**
  * Fetch all reviews, optionally filtered by source.
  * @param {string|null} source - 'Google' | 'Yelp' | 'Facebook' | null (all)
  * @returns {Promise<Array>}
+ *
+ * NOTE: When `source` is provided this query uses a composite index on
+ * (source ASC, timestamp DESC).  If the index does not exist yet Firestore
+ * will throw an error containing a direct link to create it — follow that
+ * link in the Firebase console to resolve the issue.
  */
 export async function fetchReviews(source = null) {
   try {
@@ -47,7 +60,18 @@ export async function fetchReviews(source = null) {
     const snapshot = await getDocs(q);
     return snapshot.docs.map((d) => ({ id: d.id, ...d.data() }));
   } catch (err) {
-    console.error('fetchReviews error:', err);
+    // Firestore surfaces missing-index errors with a console-friendly URL.
+    // Re-surface it so developers can act on it immediately.
+    if (err?.code === 'failed-precondition' || err?.message?.includes('index')) {
+      console.error(
+        '[EchoRefinery] Firestore composite index missing for the reviews collection. ' +
+          'Create the index (source ASC + timestamp DESC) at the URL in the error below, ' +
+          'then reload the app.',
+        err,
+      );
+    } else {
+      console.error('fetchReviews error:', err);
+    }
     return [];
   }
 }
@@ -101,21 +125,27 @@ export async function deleteReview(id) {
 
 /**
  * Bulk-seed simulated reviews (used in demo mode when Firebase is not configured).
+ * Automatically chunks into batches of up to FIRESTORE_BATCH_LIMIT (500) to
+ * stay within Firestore's per-batch operation limit.
  * @param {Array} reviews
  */
 export async function seedReviews(reviews) {
-  const batch = writeBatch(db);
-  reviews.forEach((r) => {
-    const ref = doc(collection(db, REVIEWS_COLLECTION));
-    batch.set(ref, {
-      text: r.text,
-      author: r.author,
-      rating: r.rating,
-      source: r.source,
-      timestamp: serverTimestamp(),
-      sentiment: r.sentiment ?? 'Neutral',
-      replyStatus: r.replyStatus ?? 'Pending',
+  // Split the input into chunks that fit within Firestore's 500-op batch limit.
+  for (let i = 0; i < reviews.length; i += FIRESTORE_BATCH_LIMIT) {
+    const chunk = reviews.slice(i, i + FIRESTORE_BATCH_LIMIT);
+    const batch = writeBatch(db);
+    chunk.forEach((r) => {
+      const ref = doc(collection(db, REVIEWS_COLLECTION));
+      batch.set(ref, {
+        text: r.text,
+        author: r.author,
+        rating: r.rating,
+        source: r.source,
+        timestamp: serverTimestamp(),
+        sentiment: r.sentiment ?? 'Neutral',
+        replyStatus: r.replyStatus ?? 'Pending',
+      });
     });
-  });
-  await batch.commit();
+    await batch.commit();
+  }
 }

@@ -104,13 +104,13 @@ export default function Dashboard() {
       {/* Quick stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
-          { label: 'Total Reviews', value: stats.total, color: 'text-indigo-600 bg-indigo-50' },
-          { label: 'Positive', value: stats.pos, color: 'text-green-600 bg-green-50' },
-          { label: 'Negative', value: stats.neg, color: 'text-red-600 bg-red-50' },
-          { label: 'Awaiting Reply', value: stats.pending, color: 'text-amber-600 bg-amber-50' },
-        ].map(({ label, value, color }) => (
-          <div key={label} className="card text-center">
-            <div className={`text-2xl font-extrabold ${color.split(' ')[0]}`}>{value}</div>
+          { label: 'Total Reviews', value: stats.total, textColor: 'text-indigo-600', bgColor: 'bg-indigo-50' },
+          { label: 'Positive', value: stats.pos, textColor: 'text-green-600', bgColor: 'bg-green-50' },
+          { label: 'Negative', value: stats.neg, textColor: 'text-red-600', bgColor: 'bg-red-50' },
+          { label: 'Awaiting Reply', value: stats.pending, textColor: 'text-amber-600', bgColor: 'bg-amber-50' },
+        ].map(({ label, value, textColor, bgColor }) => (
+          <div key={label} className={`card text-center ${bgColor}`}>
+            <div className={`text-2xl font-extrabold ${textColor}`}>{value}</div>
             <div className="text-xs text-gray-500 mt-0.5 font-medium">{label}</div>
           </div>
         ))}
